@@ -128,7 +128,7 @@ const ItemSetup = (function(){
 }
 )()
 
-constUISetup = (function(){
+const UISetup = (function(){
     const UISelectors= {
         itemList: '#item-list',
         addBtn: '.add-btn',
