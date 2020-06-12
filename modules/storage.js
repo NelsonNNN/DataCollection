@@ -2,12 +2,34 @@ const StorageSetup = (function(){
     return{
         storeinStorage: function(item){
             let items;
+            const data = Array.isArray(item)
             if(localStorage.getItem('items') === null){
-                items = []
+            items=[]
+            if(data === true){
+                item.forEach(data =>{
+                    items.push(data)
+                })
+            }else{
                 items.push(item)
+            }
+            localStorage.setItem('items', JSON.stringify(items))
+            }
+        },
+        addinStorage: function(item){
+            let items;
+            const data = Array.isArray(item)
+            if(localStorage.getItem('items') === null){
+                items=[]
+                if(data === true){
+                    item.forEach(data =>{
+                        items.push(data)
+                    })
+                }else{
+                    items.push(item)
+                }
                 localStorage.setItem('items', JSON.stringify(items))
             }else{
-                items = JSON.parse(localStorage.getItem('items'))
+                const items = JSON.parse(localStorage.getItem('items'))
                 items.push(item)
                 localStorage.setItem('items', JSON.stringify(items))
             }

@@ -1,3 +1,5 @@
+import {itemsetup} from './items'
+
 const UISetup = (function(){
     const UISelectors= {
         itemList: '#item-list',
@@ -11,12 +13,21 @@ const UISetup = (function(){
         clearBtn : '.clear-btn',
         backBtn : '.back-btn'
     }
+    let lists = '';
+
     return {
+        populateItem: function(items){
+                lists += `<li class="collection-item" id="item-${items.id}">
+                <strong>${items.name}: </strong><em>${items.calories} Calories</em>
+                <a href="#" class="secondary-content"><i class="edit-item fa fa-pencil"></i></a>
+            </li>`
+            document.querySelector(UISelectors.itemList).innerHTML = lists
+        },
         populateItems: function(itemsinData){
-            let lists = '';
+            let lists = ''
             itemsinData.forEach(items => {
                 lists += `<li class="collection-item" id="item-${items.id}">
-                <strong>${items.name}: </strong><em>${items.calories}</em>
+                <strong>${items.name}: </strong><em>${items.calories} Calories</em>
                 <a href="#" class="secondary-content"><i class="edit-item fa fa-pencil"></i></a>
             </li>`
             })
@@ -26,7 +37,7 @@ const UISetup = (function(){
             const li = document.createElement('li')
             li.className = 'collection-item'
             li.id = `item-${item.id}`
-            li.innerHTML = `<strong>${item.name}: </strong><em>${item.calories}</em>
+            li.innerHTML = `<strong>${item.name}: </strong><em>${item.calories} Calories</em>
                 <a href="#" class="secondary-content"><i class="edit-item fa fa-pencil"></i></a>
             </li>`
             document.querySelector(UISelectors.itemList).insertAdjacentElement('beforeend', li)
@@ -54,8 +65,8 @@ const UISetup = (function(){
             })
         },
         addItemtoList:function(){
-            document.querySelector(UISelectors.itemNameInput).value = ItemSetup.getCurrentItem().name
-            document.querySelector(UISelectors.itemCaloriesInput).value = ItemSetup.getCurrentItem().calories
+            document.querySelector(UISelectors.itemNameInput).value = itemsetup.getCurrentItem().name
+            document.querySelector(UISelectors.itemCaloriesInput).value = itemsetup.getCurrentItem().calories
         },
         deleteListItem: function(id){
             const itemID = `#item-${id}`;

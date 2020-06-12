@@ -1,0 +1,29 @@
+{
+  "posts": [
+    {
+      "id": 5,
+      "name": "Skuma",
+      "calories": 4544
+    },
+    {
+      "id": 6,
+      "name": "Skuma",
+      "calories": 45
+    },
+    {
+      "id": 7,
+      "name": "sdgsg",
+      "calories": 45
+    },
+    {
+      "id": 8,
+      "name": "Skuma",
+      "calories": 34
+    },
+    {
+      "id": 1,
+      "name": "Skuma",
+      "calories": 454
+    }
+  ]
+}
