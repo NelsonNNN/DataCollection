@@ -5,18 +5,17 @@ import {http} from './modules/easyHttp'
 
 
 const App = (function(itemsetup,uisetup, storagesetup){
+    const UISelectors =uisetup.getSeletor();
     const addEvents = function(){
-        const UISelectors =uisetup.getSeletor();
-        document.addEventListener('DOMContentLoaded', getData)
+        window.addEventListener('load', getData)
         document.querySelector(UISelectors.addBtn).addEventListener('click', addItem);
         document.querySelector(UISelectors.itemList).addEventListener('click', editItem);
         document.querySelector(UISelectors.updateBtn).addEventListener('click', updateItems);
         document.querySelector(UISelectors.deleteBtn).addEventListener('click', deleteItems);
-        document.querySelector(UISelectors.clearBtn).addEventListener('click', clearLists);
         document.querySelector(UISelectors.backBtn).addEventListener('click',uisetup.clearEditState)
     }
 
-    const getData = function(){
+    function getData(){
         const items =itemsetup.getItems()
         const resolveData = 
              http.get('http://localhost:3000/posts')
@@ -24,23 +23,24 @@ const App = (function(itemsetup,uisetup, storagesetup){
                 return posts
             })
             .catch(err=>console.log(err))
-        resolveData
-        .then(posts => {
-            if(posts.length === 0){
-                if(items.length !== 0){
-                    let calorise=null
-                    items.forEach(item =>{
-                    calorise += item.calories
-                    uisetup.theTotalCalories(calorise)
-                    http.post('http://localhost:3000/posts', item)
-                    .then(items => {
-                        uisetup.populateItem(items)
-                    }) })
-                    .catch(err => console.log(err));
-                }
-            }else{
-                http.get('http://localhost:3000/posts')
-                .then(posts => {
+        if(document.readyState === 'complete'){
+            resolveData
+            .then(posts => {
+                if(posts.length === 0){
+                    if(items.length !== 0){
+                        let calorise=null
+                        items.forEach(item =>{
+                        calorise += item.calories
+                        uisetup.theTotalCalories(calorise)
+                        http.post('http://localhost:3000/posts', item)
+                        .then(items => {
+                            uisetup.populateItem(items)
+                        }) })
+                        .catch(err => console.log(err));
+                    }else{
+                        console.log('Everything is empty')
+                    }
+                }else if(items.length === 0){
                     storagesetup.storeinStorage(posts)
                     uisetup.populateItems(posts)
                     let calories=null
@@ -48,21 +48,30 @@ const App = (function(itemsetup,uisetup, storagesetup){
                         calories += post.calories
                     })
                     uisetup.theTotalCalories(calories)
-                })
-                .catch(err=>console.log(err))
-            }
-        })
+                }
+                else{
+                    uisetup.populateItems(posts)
+                    let calories=null
+                    posts.forEach(post =>{
+                        calories += post.calories
+                    })
+                    uisetup.theTotalCalories(calories)
+                }
+            })
+        }
     }
     
     const addItem = function(e){
+        e.preventDefault()
         const input =uisetup.getIteminput()
         const newItem = itemsetup.addItems(input.name, input.calories)
-        e.preventDefault()
+        const data = itemsetup.getItems()
         if(input.name !== '' && input.calories !== ''){
             http.post('http://localhost:3000/posts', newItem)
             .then(newItem => {
                 storagesetup.addinStorage(newItem);
-                 uisetup.createListItems(newItem);
+                data.push(newItem)
+                uisetup.createListItems(newItem);
             })
             .catch(err => console.log(err))
             const addAllCalories = itemsetup.addCalories()
@@ -110,18 +119,6 @@ const App = (function(itemsetup,uisetup, storagesetup){
         storagesetup.deletefromStorage(itemDelete.id)
         uisetup.clearEditState()
     }
-    const clearLists = function(){
-        itemsetup.clearAll();
-        uisetup.clearEverything()
-        storagesetup.clearAllfromStorage()
-        const addAllCalories = 0
-        uisetup.theTotalCalories(addAllCalories)
-        uisetup.clearEditState()
-        http.delete(`http://localhost:3000/posts/${itemDelete.id}`)
-        .then(itemDelete => {
-            storagesetup.deletefromStorage(itemDelete.id)
-        })
-    }
     return{
         
         init: function(){
@@ -130,5 +127,8 @@ const App = (function(itemsetup,uisetup, storagesetup){
         }
     }
 })(itemsetup,uisetup, storagesetup)
+
+
+
 
 App.init();

@@ -4,16 +4,25 @@ const StorageSetup = (function(){
             let items;
             const data = Array.isArray(item)
             if(localStorage.getItem('items') === null){
-            items=[]
-            if(data === true){
-                item.forEach(data =>{
-                    items.push(data)
-                })
+                items=[]
+                if(data === true){
+                    item.forEach(data =>{
+                        items.push(data)
+                    })
+                }else{
+                    items.push(item)
+                }
             }else{
-                items.push(item)
+                items = JSON.parse(localStorage.getItem('items'))
+                if(data === true){
+                    item.forEach(data =>{
+                        items.push(data)
+                    })
+                }else{
+                    items.push(item)
+                }
             }
-            localStorage.setItem('items', JSON.stringify(items))
-            }
+                localStorage.setItem('items', JSON.stringify(items))
         },
         addinStorage: function(item){
             let items;
@@ -27,12 +36,17 @@ const StorageSetup = (function(){
                 }else{
                     items.push(item)
                 }
-                localStorage.setItem('items', JSON.stringify(items))
             }else{
-                const items = JSON.parse(localStorage.getItem('items'))
-                items.push(item)
-                localStorage.setItem('items', JSON.stringify(items))
+                items = JSON.parse(localStorage.getItem('items'))
+                if(data === true){
+                    item.forEach(data =>{
+                        items.push(data)
+                    })
+                }else{
+                    items.push(item)
+                }
             }
+            localStorage.setItem('items', JSON.stringify(items))
         },
         getfromStorage: function(){
             let items;

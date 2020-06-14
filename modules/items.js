@@ -1,9 +1,7 @@
 import {storagesetup} from './storage'
-import {uisetup} from './ui'
 
 const ItemSetup = (function(){
-    const Item = function(name, calories, id){
-        this.id = id;
+    const Item = function(name, calories){
         this.name = name;
         this.calories = calories;
     }
@@ -52,15 +50,8 @@ const ItemSetup = (function(){
             return found;
         },
         addItems: function(name, calories){
-            let ID;
-            if(data.items.length > 0){
-                ID = data.items[data.items.length - 1].id + 1
-            }else{
-                ID = 1
-            }
             calories = parseInt(calories)
-            const newItem = new Item(name, calories, ID)
-            data.items.push(newItem)
+            const newItem = new Item(name, calories)
             return newItem
         },
         deleteItem: function(id){
