@@ -2,11 +2,6 @@
   "posts": [
     {
       "name": "Skuma",
-      "calories": 45,
-      "id": 19
-    },
-    {
-      "name": "Skuma",
       "calories": 454,
       "id": 21
     },
@@ -14,11 +9,6 @@
       "name": "Ugali",
       "calories": 100,
       "id": 22
-    },
-    {
-      "name": "Skuma",
-      "calories": 34,
-      "id": 23
     }
   ]
 }
